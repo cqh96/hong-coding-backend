@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: hong-coding-content
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hong_coding_content?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+dubbo:
+  application:
+    name: hong-coding-content
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848 
