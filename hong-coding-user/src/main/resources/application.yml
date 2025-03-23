@@ -5,21 +5,95 @@ spring:
     name: hong-coding-user
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hong_coding_user?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://117.72.84.26:13306/hong_coding_blog?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
     username: root
-    password: root
+    password: 123456
   cloud:
     nacos:
       config:
-        server-addr: localhost:8848
+        server-addr: 117.72.84.26:8848
       discovery:
-        server-addr: localhost:8848
+        server-addr: 117.72.84.26:8848
+        fail-fast: false  # 启用失败容忍，允许应用启动后再重试连接
+        watch-delay: 30000  # 调整监听延迟
+
+  # Redis 云服务器搭建后配置并重启 【否则会 Unable to connect to 39.96.*.*:6379】
+  # 防火墙放行：firewall-cmd --zone=public --add-port=6379/tcp --permanent
+  # 防火墙重启：firewall-cmd --reload
+  # redis.conf 注释掉 bind 127.0.0.1
+  # redis.conf protected-mode yes 改为 protected-mode no
+  redis:
+    database: 0
+    host: 117.72.84.26     # Redis服务器地址，修改为你的地址
+    port: 16379          # Redis服务器连接端口
+    password:           # Redis服务器连接密码（默认为空）
+    timeout: 3000       # Redis服务器链接超时配置
 
 dubbo:
   application:
     name: hong-coding-user
+    version: 1.0.0
   protocol:
     name: dubbo
     port: -1
   registry:
-    address: nacos://localhost:8848
+    address: nacos://117.72.84.26:8848
+
+# mybatis
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  type-enums-package: cn.sheeranpj.blog.common.enums
+  configuration:
+    map-underscore-to-camel-case: true
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# xxl-job
+# 官网：https://github.com/xuxueli/xxl-job/
+# 地址：http://localhost:7397/xxl-job-admin 【需要先启动 xxl-job】
+# http://39.96.73.167:7397/xxl-job-admin
+# 账号：admin
+# 密码：123456
+xxl:
+  job:
+    admin:
+      ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+      addresses: http://117.72.84.26:7397/xxl-job-admin
+    executor:
+      ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+      appname: blog-job
+      ### 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。
+      address:
+      ### 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 "执行器注册" 和 "调度中心请求并触发任务"；
+      ip:
+      ### 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
+      port: 9998
+      logpath: /Users/sheeran/lottery/data/applogs/xxl-job/jobhandler
+      logretentiondays: 50
+    accessToken: QWEhong520
+
+# system
+system:
+  # 是否启用Swagger
+  swagger-enabled: false
+  # 系统缓存ttl，1天
+  cache-default-ttl-seconds: 86400
+
+#监控和健康检查
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+springdoc:
+  swagger-ui.path: /swagger-ui
+  api-docs.path: /api-docs
+  cache:
+    disabled: true
+  show-actuator: true

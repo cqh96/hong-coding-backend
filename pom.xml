@@ -42,7 +42,7 @@
         <rabbitmq.version>2.5.2</rabbitmq.version>
         <lombok.version>1.18.22</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <hutool.version>5.7.22</hutool.version>
+        <hutool.version>5.8.24</hutool.version>
         <knife4j.version>3.0.3</knife4j.version>
         <jwt.version>0.9.1</jwt.version>
         <springdoc.version>1.7.0</springdoc.version>
@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>com.alibaba.nacos</groupId>
                 <artifactId>nacos-client</artifactId>
-                <version>2.2.3</version> <!-- 最低要求 2.0.3 -->
+                <version>2.5.0</version> <!-- 最低要求 2.0.3 -->
             </dependency>
 
             <!--sentinel：服务限流、降级、熔断-->

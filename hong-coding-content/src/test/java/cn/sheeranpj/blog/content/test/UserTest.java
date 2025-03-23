@@ -2,7 +2,6 @@ package cn.sheeranpj.blog.content.test;
 
 import cn.sheeranpj.blog.user.api.UserService;
 import cn.sheeranpj.blog.user.entity.User;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.junit.Test;

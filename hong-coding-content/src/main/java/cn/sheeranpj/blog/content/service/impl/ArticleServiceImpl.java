@@ -5,9 +5,7 @@ import cn.sheeranpj.blog.content.mapper.ArticleMapper;
 import cn.sheeranpj.blog.content.service.ArticleService;
 import cn.sheeranpj.blog.user.api.UserService;
 import cn.sheeranpj.blog.user.entity.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;

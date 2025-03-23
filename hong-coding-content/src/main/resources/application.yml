@@ -10,8 +10,10 @@ spring:
     password: root
   cloud:
     nacos:
+      config:
+        server-addr: 117.72.84.26:8848
       discovery:
-        server-addr: localhost:8848
+        server-addr: 117.72.84.26:8848
 
 dubbo:
   application:
@@ -20,4 +22,4 @@ dubbo:
     name: dubbo
     port: -1
   registry:
-    address: nacos://localhost:8848 
+    address: nacos://117.72.84.26:8848

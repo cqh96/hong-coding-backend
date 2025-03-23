@@ -5,7 +5,15 @@ spring:
   application:
     name: hong-coding-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: 117.72.84.26:8848
+      config:
+        server-addr: 117.72.84.26:8848
     gateway:
+      discovery:
+        locator:
+          enabled: true # 启用服务发现
       routes:
         - id: content_route
           uri: lb://hong-coding-content
@@ -13,6 +21,7 @@ spring:
             - Path=/api/articles/**,/api/categories/**
           filters:
             - StripPrefix=1
+            - AddRequestHeader=X-Request-From, Gateway
             
         - id: user_route
           uri: lb://hong-coding-user
@@ -20,10 +29,17 @@ spring:
             - Path=/api/users/**,/api/auth/**
           filters:
             - StripPrefix=1
+            - AddRequestHeader=X-Request-From, Gateway
             
         - id: search_route
           uri: lb://hong-coding-search
           predicates:
             - Path=/api/search/**
           filters:
-            - StripPrefix=1 
+            - StripPrefix=1
+            - AddRequestHeader=X-Request-From, Gateway
+
+    sentinel:
+      transport:
+        dashboard: 117.72.84.26:8858
+      eager: true 
