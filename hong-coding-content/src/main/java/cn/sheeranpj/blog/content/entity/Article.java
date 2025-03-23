@@ -3,12 +3,15 @@ package cn.sheeranpj.blog.content.entity;
 import cn.sheeranpj.blog.common.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
 
 /**
  * @author sheeran
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("t_article")
 public class Article extends BaseEntity {
     private String title;
     private String content;
@@ -20,4 +23,6 @@ public class Article extends BaseEntity {
     private Integer commentCount;
     private Integer status;
     private String authorName;
+    @TableField("user_id")
+    private Long userId;
 } 

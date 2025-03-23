@@ -1,20 +1,49 @@
+# ======================
+# 服务基础配置
+# ======================
 server:
+  # 服务监听端口
   port: 8080
 
+
+# ======================
+# Spring 应用配置
+# ======================
 spring:
   application:
+    # 微服务注册名称（用于服务发现标识）
     name: hong-coding-gateway
+
+  # ======================
+  # Spring Cloud 组件配置
+  # ======================
   cloud:
+    # Nacos 服务治理配置
     nacos:
       discovery:
+        # 服务注册中心地址（格式：IP:Port）
         server-addr: 117.72.84.26:8848
       config:
+        # 配置中心地址（格式：IP:Port） 
         server-addr: 117.72.84.26:8848
+
+    # ======================
+    # API 网关核心配置
+    # ======================
     gateway:
       discovery:
         locator:
-          enabled: true # 启用服务发现
+          # 开启服务发现自动路由（根据服务名自动创建路由）
+          enabled: true
       routes:
+        # ----------------------
+        # 内容服务路由规则
+        # - uri: 负载均衡协议 + 目标服务名
+        # - predicates: 路径匹配规则（支持Ant风格）
+        # - filters: 
+        #   - StripPrefix: 去除请求路径前缀（数字表示去除的层级）
+        #   - AddRequestHeader: 添加自定义请求头
+        # ----------------------
         - id: content_route
           uri: lb://hong-coding-content
           predicates:
@@ -23,6 +52,9 @@ spring:
             - StripPrefix=1
             - AddRequestHeader=X-Request-From, Gateway
             
+        # ----------------------
+        # 用户服务路由规则
+        # ----------------------
         - id: user_route
           uri: lb://hong-coding-user
           predicates:
@@ -31,6 +63,9 @@ spring:
             - StripPrefix=1
             - AddRequestHeader=X-Request-From, Gateway
             
+        # ----------------------
+        # 搜索服务路由规则
+        # ----------------------
         - id: search_route
           uri: lb://hong-coding-search
           predicates:
@@ -39,7 +74,12 @@ spring:
             - StripPrefix=1
             - AddRequestHeader=X-Request-From, Gateway
 
+    # ======================
+    # Sentinel 流量治理配置
+    # ======================
     sentinel:
       transport:
+        # Sentinel 控制台地址（格式：IP:Port）
         dashboard: 117.72.84.26:8858
+      # 立即初始化Sentinel上下文（避免懒加载导致保护延迟）
       eager: true 

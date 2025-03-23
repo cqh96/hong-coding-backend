@@ -3,11 +3,67 @@ server:
 spring:
   application:
     name: hong-coding-user
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://117.72.84.26:13306/hong_coding_blog?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
-    username: root
-    password: 123456
+  shardingsphere:
+    mode:
+      type: Memory
+    datasource:
+      names: master,slave0,slave1
+      master:
+        type: com.zaxxer.hikari.HikariDataSource  # 显式指定数据源类型
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://117.72.84.26:13306/hong_coding_blog?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        username: root
+        password: 123456
+      slave0:
+        type: com.zaxxer.hikari.HikariDataSource  # 显式指定数据源类型
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://117.72.84.26:13306/hong_coding_blog_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        username: root
+        password: 123456
+      slave1:
+        type: com.zaxxer.hikari.HikariDataSource  # 显式指定数据源类型
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://117.72.84.26:13306/hong_coding_blog_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+        username: root
+        password: 123456
+    rules:
+      # 声明使用读写分离规则
+      readwrite-splitting:
+        # 读写分离的数据源配置
+        data-sources:
+          readwrite_ds:
+            type: Static
+            props:
+              # 写操作指向的主数据源名称
+              write-data-source-name: master
+              # 读操作指向的从数据源名称列表
+              read-data-source-names: slave0,slave1
+            load-balancer-name: weighted_lb
+        load-balancers:
+          weighted_lb:
+            type: ROUND_ROBIN
+            props:
+              slave0: 2
+              slave1: 1
+    props:
+      # 是否在日志中打印 SQL。
+      # 打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。
+      # 如果开启配置，日志将使用 Topic ShardingSphere-SQL，日志级别是 INFO。 false
+      sql-show: true
+      # 是否在日志中打印简单风格的 SQL。false
+      sql-simple: true
+      # 用于设置任务处理线程池的大小。每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池。
+      executor-size: 20
+      # 查询请求在每个数据库实例中所能使用的最大连接数。1
+      max-connections-size-per-query: 1
+      # 在程序启动和更新时，是否检查分片元数据的结构一致性。
+      check-table-metadata-enabled: false
+      # 在程序启动和更新时，是否检查重复表。false
+      check-duplicate-table-enabled: false
+      sql-comment-parse-enabled: true
+      # 添加事务管理器类型（关键修复项）
+      transaction-type: BASE
+
   cloud:
     nacos:
       config:
@@ -41,9 +97,11 @@ dubbo:
 
 # mybatis
 mybatis-plus:
-  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  mapper-locations: classpath*:mapper/**/*.xml
   type-enums-package: cn.sheeranpj.blog.common.enums
   configuration:
+    # 禁用 MyBatis-Plus 自带的 SQL 解析器
+    shardingsphere: true
     map-underscore-to-camel-case: true
     # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
@@ -57,7 +115,7 @@ xxl:
   job:
     admin:
       ### 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
-      addresses: http://117.72.84.26:7397/xxl-job-admin
+      address: http://117.72.84.26:7397/xxl-job-admin
     executor:
       ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
       appname: blog-job

@@ -4,6 +4,7 @@ import cn.sheeranpj.blog.user.api.UserService;
 import cn.sheeranpj.blog.user.entity.User;
 import cn.sheeranpj.blog.user.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
@@ -14,22 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 @DubboService
 @Slf4j
-public class UserServiceImpl implements UserService {
-    private final UserMapper userMapper;
-
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        User user = new User("cqh", "123456");
-        return user;
+        return new User("cqh", "123456");
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return userMapper.selectOne(
+        return baseMapper.selectOne(
             new LambdaQueryWrapper<User>()
                 .eq(User::getUsername, username)
         );

@@ -24,6 +24,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public Article create(Article article) {
         User user = userService.getUserById(1L);
+        article.setUserId(user.getId());
         article.setAuthorName(user.getUsername());
         save(article);
         return article;

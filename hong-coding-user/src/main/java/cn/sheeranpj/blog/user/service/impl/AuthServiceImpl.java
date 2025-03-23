@@ -5,6 +5,7 @@ import cn.sheeranpj.blog.user.entity.User;
 import cn.sheeranpj.blog.user.mapper.UserMapper;
 import cn.sheeranpj.blog.user.service.AuthService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,14 @@ import java.util.Date;
  * @author sheeran
  */
 @Service
-public class AuthServiceImpl implements AuthService {
-    private final UserMapper userMapper;
+public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements AuthService {
+
     private static final String SECRET_KEY = "your-secret-key";
 
-    public AuthServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @Override
     public String login(LoginDTO loginDTO) {
-        User user = userMapper.selectOne(
+        User user = baseMapper.selectOne(
             new LambdaQueryWrapper<User>()
                 .eq(User::getUsername, loginDTO.getUsername())
                 .eq(User::getPassword, loginDTO.getPassword())
