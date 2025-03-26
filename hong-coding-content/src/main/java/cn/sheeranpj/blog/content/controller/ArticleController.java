@@ -16,7 +16,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping
+    @PostMapping("/create")
     public Result<Article> create(@RequestBody Article article) {
         return Result.success(articleService.create(article));
     }

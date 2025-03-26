@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: hong-coding-gateway-service
+  cloud:
+    nacos:
+      config:
+        server-addr: 117.72.84.26:8848
+        file-extension: yaml
+        namespace: 3e267142-da98-40fc-b343-9eb23d7a3a8b
+        group: DEFAULT_GROUP
+        refresh-enabled: true
+        extension-configs:
+          - data-id: security-config.yaml
+            group: SECURITY_GROUP
+            refresh: true

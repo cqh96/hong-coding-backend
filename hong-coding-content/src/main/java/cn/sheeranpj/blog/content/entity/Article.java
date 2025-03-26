@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_article")
+@TableName("article_2025")
 public class Article extends BaseEntity {
     private String title;
     private String content;

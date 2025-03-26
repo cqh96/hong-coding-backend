@@ -18,9 +18,9 @@
     <modules>
         <module>hong-coding-common</module>
         <module>hong-coding-gateway</module>
+        <module>hong-coding-content</module>
         <module>hong-coding-user</module>
         <module>hong-coding-auth</module>
-        <module>hong-coding-content</module>
         <module>hong-coding-search</module>
     </modules>
 
@@ -32,8 +32,8 @@
         <spring-cloud.version>2021.0.1</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
         <dubbo.version>3.1.2</dubbo.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <mybatis.plus.dynamic.datasource.version>3.6.1</mybatis.plus.dynamic.datasource.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <mybatis.plus.dynamic.datasource.version>4.3.0</mybatis.plus.dynamic.datasource.version>
         <mysql.version>8.0.28</mysql.version>
 <!--        <druid.version>1.2.5</druid.version>-->
         <elasticsearch.version>7.15.2</elasticsearch.version>
@@ -139,7 +139,7 @@
             <dependency>
                 <groupId>com.alibaba.nacos</groupId>
                 <artifactId>nacos-client</artifactId>
-                <version>2.5.0</version> <!-- 最低要求 2.0.3 -->
+                <version>2.5.0</version><!-- 最低要求 2.0.3 -->
             </dependency>
 
             <!--sentinel：服务限流、降级、熔断-->
@@ -155,10 +155,7 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
                 <exclusions>
-                    <exclusion>
-                        <groupId>com.zaxxer</groupId>
-                        <artifactId>HikariCP</artifactId>
-                    </exclusion>
+                    
                 </exclusions>
             </dependency>
 
@@ -171,7 +168,13 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId>
-                <version>3.4.0</version>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <!-- MySQL -->
@@ -254,6 +257,18 @@
                 <version>${jwt.version}</version>
             </dependency>
 
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt-api</artifactId>-->
+<!--                <version>0.11.5</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt-impl</artifactId>-->
+<!--                <version>0.11.5</version>-->
+<!--                <scope>runtime</scope>-->
+<!--            </dependency>-->
+
             <!-- SpringDoc OpenAPI (Swagger3) -->
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -301,6 +316,26 @@
                 <groupId>org.apache.shardingsphere</groupId>
                 <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
                 <version>${shardingsphere.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Gateway -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+                <version>3.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -358,7 +393,7 @@
         </repository>
         <repository>
             <id>alimaven</id>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <url>https://maven.aliyun.com/repository/public/</url>
         </repository>
     </repositories>
 

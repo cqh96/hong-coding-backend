@@ -97,8 +97,7 @@ dubbo:
 
 # mybatis
 mybatis-plus:
-  mapper-locations: classpath*:mapper/**/*.xml
-  type-enums-package: cn.sheeranpj.blog.common.enums
+  mapper-locations: classpath:mapper/*.xml
   configuration:
     # 禁用 MyBatis-Plus 自带的 SQL 解析器
     shardingsphere: true

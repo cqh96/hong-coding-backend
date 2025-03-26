@@ -2,6 +2,9 @@ package cn.sheeranpj.blog.common.response;
 
 import lombok.Data;
 
+/**
+ * @author sheeran
+ */
 @Data
 public class Result<T> {
     private Integer code;
@@ -19,6 +22,13 @@ public class Result<T> {
     public static <T> Result<T> error(String message) {
         Result<T> result = new Result<>();
         result.setCode(500);
+        result.setMessage(message);
+        return result;
+    }
+
+    public static <T> Result<T> error(Integer code, String message) {
+        Result<T> result = new Result<>();
+        result.setCode(code);
         result.setMessage(message);
         return result;
     }

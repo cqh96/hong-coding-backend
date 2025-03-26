@@ -5,6 +5,7 @@ import cn.sheeranpj.blog.content.mapper.ArticleMapper;
 import cn.sheeranpj.blog.content.service.ArticleService;
 import cn.sheeranpj.blog.user.api.UserService;
 import cn.sheeranpj.blog.user.entity.User;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import lombok.extern.slf4j.Slf4j;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
+@DS("master")
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
     @SuppressWarnings("unused")
@@ -26,7 +28,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         User user = userService.getUserById(1L);
         article.setUserId(user.getId());
         article.setAuthorName(user.getUsername());
-        save(article);
+        this.save(article);
         return article;
     }
 
@@ -40,4 +42,4 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public void delete(Long id) {
         removeById(id);
     }
-} 
+}
