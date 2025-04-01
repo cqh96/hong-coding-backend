@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: hong-coding-user
+#  datasource:
+#    dynamic:
+#      # 指定主数据源名称（必须与下方数据源名称一致）
+#      primary: master
+  autoconfigure:
+    exclude: com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration
   shardingsphere:
     mode:
       type: Memory
@@ -45,6 +51,15 @@ spring:
             props:
               slave0: 2
               slave1: 1
+      # 添加分片规则
+      sharding:
+        tables:
+          user:   # 用户表名
+            actual-data-nodes: master.user,slave0.user,slave1.user
+        # 设置广播表，这样所有表的操作都会在所有数据源执行
+        broadcast-tables:
+          - user
+          # 后续如果有其他表也需要广播，在这里添加
     props:
       # 是否在日志中打印 SQL。
       # 打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。
@@ -55,11 +70,12 @@ spring:
       # 用于设置任务处理线程池的大小。每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池。
       executor-size: 20
       # 查询请求在每个数据库实例中所能使用的最大连接数。1
-      max-connections-size-per-query: 1
+      max-connections-size-per-query: 2
       # 在程序启动和更新时，是否检查分片元数据的结构一致性。
       check-table-metadata-enabled: false
       # 在程序启动和更新时，是否检查重复表。false
       check-duplicate-table-enabled: false
+      # 在程序启动和更新时，是否检查重复列。false
       sql-comment-parse-enabled: true
       # 添加事务管理器类型（关键修复项）
       transaction-type: BASE
@@ -100,9 +116,14 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     # 禁用 MyBatis-Plus 自带的 SQL 解析器
-    shardingsphere: true
+#    shardingsphere: true
     map-underscore-to-camel-case: true
-    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 # xxl-job
 # 官网：https://github.com/xuxueli/xxl-job/

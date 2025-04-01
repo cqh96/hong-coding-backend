@@ -74,7 +74,7 @@ spring:
         # 用户服务路由规则
         # ----------------------
         - id: user_route
-          uri: lb://hong-coding-user
+          uri: lhttp://localhost:8087
           predicates:
             - Path=/api/**
           filters:

@@ -9,6 +9,11 @@ import lombok.Getter;
 @Getter
 public enum ResCodeEnum {
     ok(0, "成功"),
+    FAIL(1, "失败"),
+    NO_AUTH(401, "未授权"),
+    NO_PERMISSION(403, "没有权限"),
+    NO_DATA(404, "数据不存在"),
+    NO_SERVICE(500, "服务异常"),
     NO_PARAM(201, "传入参数缺失,请检查"),
     ERR_PARAM(202, "传入参数异常,请检查"),
     VALID_FAIL_PARAM(203, "参数校验异常"),

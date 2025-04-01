@@ -1,29 +1,29 @@
 package cn.sheeranpj.blog.user.controller;
 
+import cn.sheeranpj.blog.common.annotation.CommonResponse;
 import cn.sheeranpj.blog.common.response.Result;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import cn.sheeranpj.blog.user.dto.LoginDTO;
+import cn.sheeranpj.blog.user.entity.User;
+import cn.sheeranpj.blog.user.service.AuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author sheeran
  */
 @RestController
+@CommonResponse
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-//    private final AuthService authService;
-//
-//    public AuthController(AuthService authService) {
-//        this.authService = authService;
-//    }
-//
-//    @PostMapping("/login")
-//    public Result<String> login(@RequestBody LoginDTO loginDTO) {
-//        String token = authService.login(loginDTO);
-//        return Result.success(token);
-//    }
+
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    public User login(@RequestBody LoginDTO loginDTO) {
+        return authService.login(loginDTO);
+    }
 
     @GetMapping("/test")
     public Result<String> test() {

@@ -6,7 +6,6 @@ import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,7 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import cn.sheeranpj.blog.gateway.config.NacosConfig;
-import cn.sheeranpj.blog.gateway.util.AESUtil;
+import cn.sheeranpj.blog.common.util.AESUtil;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import javax.annotation.PostConstruct;

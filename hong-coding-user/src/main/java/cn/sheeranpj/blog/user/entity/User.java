@@ -4,6 +4,7 @@ import cn.sheeranpj.blog.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author sheeran
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("user")
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     private String username;

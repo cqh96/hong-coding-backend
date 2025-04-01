@@ -6,6 +6,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Sheeran
  * @version 1.0
@@ -19,9 +23,13 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public static String parseTokenMono(NacosConfig config) {
+    public static String parseTokenMono(String userName, NacosConfig config) {
+        Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
-                .setSubject("user1")
+                .setClaims(claims)
+                .setSubject(userName)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SignatureAlgorithm.HS256, config.getSecretBytes())
                 .compact();
     }

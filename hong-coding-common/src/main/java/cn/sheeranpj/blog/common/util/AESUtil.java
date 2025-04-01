@@ -1,4 +1,4 @@
-package cn.sheeranpj.blog.gateway.util;
+package cn.sheeranpj.blog.common.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

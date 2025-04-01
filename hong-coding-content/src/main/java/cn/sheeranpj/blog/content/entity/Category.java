@@ -4,6 +4,9 @@ import cn.sheeranpj.blog.common.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author sheeran
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Category extends BaseEntity {

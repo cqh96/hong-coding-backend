@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AuthService extends IService<User> {
 
-    String login(LoginDTO loginDTO);
+    User login(LoginDTO loginDTO);
 } 
